@@ -1,5 +1,6 @@
 import unittest
 import requests
+from test_data import valid_login_credentials, invalid_username_valid_password, invalid_username_invalid_password, valid_username_invalid_password, valid_credentials_sign_up, invalid_credentials_sign_up_emails_not_unique, invalid_credentials_sign_up_passwords_not_match
 
 
 class Fixture(unittest.TestCase):
@@ -16,7 +17,8 @@ class TestStrategies(unittest.TestCase):
         """
         This test case is designed to check whether we are getting access token and refresh token with valid username and valid password
         """
-        self.fixture.given_valid_credentials_for_login()
+        self.fixture.given_valid_credentials_for_login(
+            valid_login_credentials['username'], valid_login_credentials['password'])
         self.fixture.when_requested_for_login()
         self.fixture.then_access_token_and_refresh_token_received_for_login()
 
@@ -24,7 +26,8 @@ class TestStrategies(unittest.TestCase):
         """
         This test case is designed to check whether we are not getting access token and refresh token with valid password and invalid username
         """
-        self.fixture.given_invalid_credentials_for_login("null", "123")
+        self.fixture.given_invalid_credentials_for_login(
+            invalid_username_valid_password['username'], invalid_username_valid_password['password'])
         self.fixture.when_requested_for_login()
         self.fixture.then_access_token_and_refresh_token_not_received_for_login()
 
@@ -32,7 +35,9 @@ class TestStrategies(unittest.TestCase):
         """
         This test case is designed to check whether we are not getting access token and refresh token with valid username and invalid password
         """
-        self.fixture.given_invalid_credentials_for_login("john", "1234")
+        # self.fixture.given_invalid_credentials_for_login("john", "1234")
+        self.fixture.given_invalid_credentials_for_login(
+            valid_username_invalid_password['username'], valid_username_invalid_password['password'])
         self.fixture.when_requested_for_login()
         self.fixture.then_access_token_and_refresh_token_not_received_for_login()
 
@@ -41,7 +46,7 @@ class TestStrategies(unittest.TestCase):
         This test case is designed to check whether we are not getting access token and refresh token with invalid username and invalid password
         """
         self.fixture.given_invalid_credentials_for_login(
-            "some-random-guy", "1234")
+            invalid_username_invalid_password['username'], invalid_username_invalid_password['password'])
         self.fixture.when_requested_for_login()
         self.fixture.then_access_token_and_refresh_token_not_received_for_login()
 
@@ -66,7 +71,7 @@ class TestStrategies(unittest.TestCase):
         This test case is designed to check whether we are not getting valid credentails in return when we have created new user whow passwords don't match
         """
         self.fixture.given_invalid_credentials_for_sign_up(
-            "mike", "12345678!!", "12345678!", "mike@gmail.com", 1, 2)
+            invalid_credentials_sign_up_passwords_not_match['username'], invalid_credentials_sign_up_passwords_not_match['password'], invalid_credentials_sign_up_passwords_not_match['confirm_password'], invalid_credentials_sign_up_passwords_not_match['email'], invalid_credentials_sign_up_passwords_not_match['first_name'], invalid_credentials_sign_up_passwords_not_match['last_name'])
         self.fixture.when_requested_for_sign_up()
         self.fixture.then_passwords_validation_error_is_returned()
 
@@ -75,7 +80,7 @@ class TestStrategies(unittest.TestCase):
         This test case is designed to check whether we are not getting valid credentails in return when we have created new user whow email is not unique
         """
         self.fixture.given_invalid_credentials_for_sign_up(
-            "mike", "12345678!!", "12345678!", "chris@site.com", 1, 2)
+            invalid_credentials_sign_up_emails_not_unique['username'], invalid_credentials_sign_up_emails_not_unique['password'], invalid_credentials_sign_up_emails_not_unique['confirm_password'], invalid_credentials_sign_up_emails_not_unique['email'], invalid_credentials_sign_up_emails_not_unique['first_name'], invalid_credentials_sign_up_emails_not_unique['last_name'])
         self.fixture.when_requested_for_sign_up()
         self.fixture.then_email_validation_error_is_returned()
 
@@ -85,28 +90,29 @@ class TestStrategies(unittest.TestCase):
                              "This field must be unique.")
 
         def then_passwords_validation_error_is_returned(self):
+            print(self.response)
             self.assertEqual(self.response.get('password')[0],
                              "Password fields didn't match.")
 
-        def given_invalid_credentials_for_sign_up(self, username, password, password2, email, first_name, last_name):
+        def given_invalid_credentials_for_sign_up(self, username, password, confirm_password, email, first_name, last_name):
             self.username = username
             self.password = password
-            self.password2 = password2
+            self.confirm_password = confirm_password
             self.email = email
             self.first_name = first_name
             self.last_name = last_name
 
         def given_valid_credentials_for_sign_up(self):
-            self.username = "chris"
-            self.password = "12345678!"
-            self.password2 = "12345678!"
-            self.email = "chris@site.com"
-            self.first_name = 1
-            self.last_name = 2
+            self.username = valid_credentials_sign_up['username']
+            self.password = valid_credentials_sign_up['password']
+            self.confirm_password = valid_credentials_sign_up['confirm_password']
+            self.email = valid_credentials_sign_up['email']
+            self.first_name = valid_credentials_sign_up['first_name']
+            self.last_name = valid_credentials_sign_up['last_name']
 
         def when_requested_for_sign_up(self):
             response = requests.post(
-                "http://127.0.0.1:8081/auth/register/", data={"username": self.username, "password": self.password, "password2": self.password2, "email": self.email, "first_name": self.first_name, "last_name": self.last_name})
+                "http://127.0.0.1:8081/auth/register/", data={"username": self.username, "password": self.password, "confirm_password": self.confirm_password, "email": self.email, "first_name": self.first_name, "last_name": self.last_name})
             self.response = response.json()
 
         def then_user_credentials_are_returned(self):
@@ -119,9 +125,9 @@ class TestStrategies(unittest.TestCase):
             self.assertEqual(self.response.get('username')[0],
                              "A user with that username already exists.")
 
-        def given_valid_credentials_for_login(self):
-            self.username = "john"
-            self.password = "123"
+        def given_valid_credentials_for_login(self, username, password):
+            self.username = username
+            self.password = password
 
         def given_invalid_credentials_for_login(self, username, password):
             self.username = username
