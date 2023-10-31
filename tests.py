@@ -90,7 +90,6 @@ class TestStrategies(unittest.TestCase):
                              "This field must be unique.")
 
         def then_passwords_validation_error_is_returned(self):
-            print(self.response)
             self.assertEqual(self.response.get('password')[0],
                              "Password fields didn't match.")
 

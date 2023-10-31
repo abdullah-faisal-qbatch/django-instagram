@@ -22,13 +22,17 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-router = DefaultRouter()
-router.register(r'posts', PostingView, basename='Posts')
+# router = DefaultRouter()
+# router.register(r'posts', PostingView, basename='Posts')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('authentication.urls')),
-    path('', include(router.urls)),
+    path('', include('core.urls')),
+    path('rooms/', include('room.urls')),
+    # path("", include('chat.urls')),
+    # path('', include(router.urls)),
+
 ]
 
 if settings.DEBUG:
