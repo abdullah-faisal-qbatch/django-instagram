@@ -32,7 +32,6 @@ urlpatterns = [
     path('rooms/', include('room.urls')),
     # path("", include('chat.urls')),
     # path('', include(router.urls)),
-
 ]
 
 if settings.DEBUG:
