@@ -1,6 +1,6 @@
-from .models import Room, Message
+from .models import Chat, Message
 from constants import TOP_MESSAGES
-from rest_framework import generics
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
@@ -16,9 +16,20 @@ def rooms(request):
     Returns:
         A rendered HTML page displaying a list of all available rooms.
     """
-    all_rooms = Room.objects.all()
-    print(all_rooms)
+    all_rooms = Chat.objects.all()
     return render(request, 'room/rooms.html', {'rooms': all_rooms})
+
+
+@login_required
+def get_users(request):
+    all_users = User.objects.all()
+    return render(request, 'room/inbox.html', {'users': all_users})
+
+
+@login_required
+def user(request, slug):
+    current_user = User.objects.get(username=slug)
+    return render(request, 'room/user.html', {'current_user': current_user})
 
 
 @login_required
@@ -33,9 +44,8 @@ def room(request, slug):
     Returns:
         A rendered HTML page showing room details and messages associated with the specified room.
     """
-    room = Room.objects.get(slug=slug)
+    room = Chat.objects.get(slug=slug)
     messages = Message.objects.filter(room=room)[:TOP_MESSAGES]
-
     return render(request, 'room/room.html', {'room': room, 'messages': messages})
 
 
@@ -53,42 +63,13 @@ def add_room(request):
         and redirects to the 'room/rooms' page.
 
     """
+    # import pdb
+    # pdb.set_trace()
     if request.method == "GET":
         return render(request, 'room/room_form.html')
     if request.method == 'POST':
         name = request.POST['name']
         slug = request.POST['slug']
-        room = Room(name=name, slug=slug)
+        room = Chat(name=name, slug=slug)
         room.save()
-        return redirect('room/rooms')
-
-
-@login_required
-class AddRoomView(generics.CreateAPIView):
-    """
-    View for adding a new room.
-
-    This view handles both GET and POST requests to display the room form and create a new room,
-    respectively.
-
-    Methods:
-    - get: Renders the room creation form for GET requests.
-    - post: Processes the submitted form data and creates a new room for POST requests.
-
-    Args:
-        request: The HTTP request object.
-
-    Returns:
-        - For GET requests, it renders the 'room_form.html' template.
-        - For POST requests, it creates a new room based on the submitted data and redirects to a specified URL.
-    """
-
-    def get(self, request, *args, **kwargs):
-        return render(request, 'room/room_form.html')
-
-    def post(self, request, *args, **kwargs):
-        name = request.POST['name']
-        slug = request.POST['slug']
-        room = Room(name=name, slug=slug)
-        room.save()
-        return redirect('')
+        return redirect('rooms')

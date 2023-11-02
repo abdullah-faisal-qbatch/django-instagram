@@ -1,19 +1,33 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Add Room</title>
-  </head>
-  <body>
-    <h1>Add Room</h1>
-    <form method="POST" action="/rooms/">
-      {% csrf_token %}
-      <label for="name">Room Name:</label>
-      <input type="text" id="name" name="name" required />
-      <br />
-      <label for="slug">Room Slug:</label>
-      <input type="text" id="slug" name="slug" required />
-      <br />
-      <button type="submit">Add Room</button>
-    </form>
-  </body>
-</html>
+{% extends 'core/base.html' %} {% block title %}Add Room | {% endblock %}
+{%block content %}
+
+<div class="flex justify-center items-center mt-48 text-white">
+  <form method="POST">
+    {% csrf_token %}
+    <label for="name">Group Name:</label>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      required
+      class="mt-4 rounded text-black px-2"
+    />
+    <br />
+    <label for="slug">Group Slug:&nbsp;&nbsp;</label>
+    <input
+      type="text"
+      id="slug"
+      name="slug"
+      required
+      class="mt-4 rounded text-black px-2"
+    />
+    <br />
+    <button
+      type="submit"
+      class="text-white border ml-24 mt-4 hover:bg-black rounded px-4 py-2"
+    >
+      Add Group
+    </button>
+  </form>
+</div>
+{% endblock %}
