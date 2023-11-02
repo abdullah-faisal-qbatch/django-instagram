@@ -1,0 +1,1 @@
+TOP_MESSAGES = 25
