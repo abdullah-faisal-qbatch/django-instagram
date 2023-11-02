@@ -32,16 +32,20 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
+    "channels",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "core",
     'rest_framework',
     'authentication',
     "rest_framework_simplejwt",
-    "posting"
+    "posting",
+    "room"
 ]
 
 SIMPLE_JWT = {
@@ -78,7 +82,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'instagram.wsgi.application'
+ASGI_APPLICATION = "instagram.asgi.application"
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -149,3 +159,13 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # AUTH_USER_MODEL = 'authentication.User'
+
+
+# LOGIN_REDIRECT_URL = "chat-page"
+
+# LOGOUT_REDIRECT_URL = "login-user"
+
+
+LOGOUT_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/rooms/"
+LOGIN_URL = '/login/'

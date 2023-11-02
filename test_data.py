@@ -1,7 +1,3 @@
-valid_data = {
-
-}
-
 valid_login_credentials = {
     "username": "john",
     "password": "123"

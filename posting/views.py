@@ -1,7 +1,6 @@
 from django.http import HttpResponse
 from rest_framework.viewsets import ReadOnlyModelViewSet
 # Create your views here.
-from rest_framework.viewsets import ReadOnlyModelViewSet
 
 
 class PostingView(ReadOnlyModelViewSet):
