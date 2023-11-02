@@ -111,7 +111,7 @@ class TestStrategies(unittest.TestCase):
 
         def when_requested_for_sign_up(self):
             response = requests.post(
-                "http://127.0.0.1:8081/auth/register/", data={"username": self.username, "password": self.password, "confirm_password": self.confirm_password, "email": self.email, "first_name": self.first_name, "last_name": self.last_name})
+                "http://127.0.0.1:8000/auth/register/", data={"username": self.username, "password": self.password, "confirm_password": self.confirm_password, "email": self.email, "first_name": self.first_name, "last_name": self.last_name})
             self.response = response.json()
 
         def then_user_credentials_are_returned(self):
@@ -134,7 +134,7 @@ class TestStrategies(unittest.TestCase):
 
         def when_requested_for_login(self):
             response = requests.post(
-                "http://127.0.0.1:8081/auth/login/", data={"username": self.username, "password": self.password})
+                "http://127.0.0.1:8000/auth/login/", data={"username": self.username, "password": self.password})
             self.response = response.json()
 
         def then_access_token_and_refresh_token_received_for_login(self):
