@@ -1,79 +1,28 @@
-{% extends 'core/base.html' %} {% block title %}Sign up | {% endblock %} {% block content %}
+{% extends 'core/base.html' %} {% block title %}Sign up | {% endblock %} {%
+block content %}
 <div class="p-10 lg:p-20 text-center">
   <h1 class="text-3xl lg:text-6xl text-white">Sign up</h1>
 </div>
-
-<form method="post" action="." class="lg:w-1/4 px-4 mx-auto">
+<form method="post" action="{% url 'auth_register' %}">
   {% csrf_token %}
-
-  <div class="mb-5">
-    <label class="text-white">Username</label>
-
-    <input
-      type="text"
-      name="username"
-      class="w-full mt-2 px-4 py-2 rounded-xl"
-    />
-  </div>
-
-  <div class="mb-5">
-    <label class="text-white">Email</label>
-
-    <input
-      type="text"
-      name="username"
-      class="w-full mt-2 px-4 py-2 rounded-xl"
-    />
-  </div>
-
-  <div class="mb-5">
-    <label class="text-white">First Name</label>
-
-    <input
-      type="text"
-      name="username"
-      class="w-full mt-2 px-4 py-2 rounded-xl"
-    />
-  </div>
-
-  <div class="mb-5">
-    <label class="text-white">Last Name</label>
-
-    <input
-      type="text"
-      name="username"
-      class="w-full mt-2 px-4 py-2 rounded-xl"
-    />
-  </div>
-
-  <div class="mb-5">
-    <label class="text-white">Password</label>
-
-    <input
-      type="password"
-      name="password1"
-      class="w-full mt-2 px-4 py-2 rounded-xl"
-    />
-  </div>
-
-  <div class="mb-5">
-    <label class="text-white">Confirm password</label>
-
-    <input
-      type="password"
-      name="password2"
-      class="w-full mt-2 px-4 py-2 rounded-xl"
-    />
-  </div>
-
-  {% if form.errors %} {% for field in form %} {% for error in field.errors %}
-  <div class="mb-5 p-4 rounded-xl bg-red-300 text-white">
-    <p>{{ error|escape }}</p>
-  </div>
-  {% endfor %} {% endfor %} {% endif %}
-
-  <button class="px-5 py-3 rounded-xl text-white bg-teal-800 hover:bg-teal-700">
-    Submit
-  </button>
+  <label for="username">Username:</label>
+  <input type="text" id="username" name="username" required />
+  <br />
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" required />
+  <br />
+  <label for="password">Password:</label>
+  <input type="password" id="password" name="password" required />
+  <br />
+  <label for="password_confirm">Confirm Password:</label>
+  <input
+    type="password"
+    id="password_confirm"
+    name="password_confirm"
+    required
+  />
+  <br />
+  <button type="submit">Sign Up</button>
 </form>
+
 {% endblock %}

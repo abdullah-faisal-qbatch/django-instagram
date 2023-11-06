@@ -7,7 +7,11 @@
 <div class="lg:w-2/4 mx-4 lg:mx-auto p-4 bg-white rounded-xl">
   <div class="chat-messages space-y-3" id="chat-messages">
     {% for m in messages %}
-    <b>{{ m.user.username }}</b>: {{ m.content }}<br />
+    <div class="p-4 bg-gray-200 rounded-xl">
+      <p class="font-semibold">{{ m.user.username }}</p>
+      <p>{{ m.content }}</p>
+    </div>
+
     {% endfor %}
   </div>
 </div>
@@ -21,15 +25,15 @@
       placeholder="Your message..."
       id="chat-message-input"
     />
-
     <button
       class="px-5 py-3 rounded-xl text-white bg-teal-600 hover:bg-teal-700"
       id="chat-message-submit"
     >
-      Submit
+      Send
     </button>
   </form>
 </div>
+
 {% endblock %} {% block scripts %} {{ room.slug|json_script:"json-roomname" }}
 {{ request.user.username|json_script:"json-username" }}
 

@@ -29,7 +29,7 @@ def get_users(request):
 @login_required
 def user(request, slug):
     current_user = User.objects.get(username=slug)
-    return render(request, 'room/user.html', {'current_user': current_user})
+    return render(request, 'room/user.html', {'current_user': current_user, 'other_user': slug})
 
 
 @login_required

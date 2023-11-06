@@ -9,6 +9,10 @@ class Chat(models.Model):
     # )
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
+    # added
+    # group_chat = models.BooleanField(default=True)
+    # created_at = models.DateTimeField(auto_now_add=True)
+    # user_chat = models.ManyToManyField(User, related_name='user_chat')
 
 
 class Message(models.Model):
