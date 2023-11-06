@@ -16,7 +16,9 @@ def rooms(request):
     Returns:
         A rendered HTML page displaying a list of all available rooms.
     """
+    print("RUNNING")
     all_rooms = Chat.objects.all()
+    print("ALL ROOMS:", all_rooms)
     return render(request, 'room/rooms.html', {'rooms': all_rooms})
 
 

@@ -7,8 +7,12 @@ class Chat(models.Model):
     #     ('group', 'Group'),
     #     ('one_to_one', 'One-to-One'),
     # )
-    name = models.CharField(max_length=255)
+    # added
+    name = models.CharField(max_length=255, default='null')
     slug = models.SlugField(unique=True)
+    group_chat = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    user_chat = models.ManyToManyField(User, related_name='user_chat')
 
 
 class Message(models.Model):
@@ -21,7 +25,6 @@ class Message(models.Model):
 
     class Meta:
         ordering = ('date_added',)
-
 
 # class GroupChat(models.Model):
 #     name = models.CharField(max_length=255, unique=True)
